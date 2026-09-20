@@ -1,0 +1,21 @@
+name: AdvancedStaff
+version: ${project.version}
+main: me.nik.advancedstaff.AdvancedStaff
+api-version: 1.13
+prefix: AdvancedStaff
+authors: [ Nik ]
+description: ${project.description}
+commands:
+  advancedstaff:
+    description: The main advanced staff command!
+    aliases: [ as ]
+permissions:
+  advancedstaff.admin:
+    description: Gives access to all admin commands
+    default: op
+  advancedstaff.reload:
+    description: Gives access to reload the plugin
+    default: op
+  advancedstaff.menu:
+    description: Gives access to the menu
+    default: op
