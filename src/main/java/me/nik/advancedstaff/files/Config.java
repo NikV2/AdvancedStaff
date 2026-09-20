@@ -93,6 +93,12 @@ public class Config {
         ), "The commands that will be executed once a frozen player disconnects", "(%nl% for new line)"),
         FREEZE_ACTIONBAR_UPDATE("freeze.actionbar_update", 60L, "How often should the actionbar update for frozen players?", "(In ticks)"),
 
+        STAFFCHAT("staff_chat", "", "Staff Chat Settings"),
+        STAFFCHAT_ALIASES("staff_chat.aliases", Arrays.asList("staffchat", "sc"), "Typing the aliases below will execute the staffchat command"),
+        STAFFCHAT_FORMAT("staff_chat.format", "&f&l[&bStaffChat&f&l] &b%player%&f» &9%message%", "The chat formatting that will show to staff members", "Placeholders: %message%, %player%", "Color codes are supported"),
+        STAFFCHAT_CONSOLE("staff_chat.console", true, "Should staff chat messages also be shown to the console?"),
+        STAFFCHAT_DISABLE_ON_QUIT("staff_chat.disable_on_quit", true, "Should staff chat be disabled when staff members quit?"),
+
         STAFFMODE("staffmode", "", "Staff Mode Settings"),
         STAFFMODE_ALIASES("staffmode.aliases", Collections.singletonList("staffmode"), "Typing the aliases below will execute the staffmode command"),
         STAFFMODE_CREATIVE("staffmode.creative", true, "Should we put players who enter the staff mode to creative?"),

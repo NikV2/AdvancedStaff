@@ -6,12 +6,15 @@ import me.nik.advancedstaff.files.Lang;
 import me.nik.advancedstaff.listeners.FreezeListener;
 import me.nik.advancedstaff.listeners.GuiListener;
 import me.nik.advancedstaff.listeners.InventoryListener;
+import me.nik.advancedstaff.listeners.StaffChatListener;
 import me.nik.advancedstaff.listeners.StaffModeListener;
 import me.nik.advancedstaff.listeners.VanishListener;
 import me.nik.advancedstaff.managers.FreezeManager;
 import me.nik.advancedstaff.managers.InventoryManager;
+import me.nik.advancedstaff.managers.StaffChatManager;
 import me.nik.advancedstaff.managers.StaffModeManager;
 import me.nik.advancedstaff.managers.VanishManager;
+import me.nik.advancedstaff.metrics.Metrics;
 import me.nik.advancedstaff.utils.ChatUtils;
 import me.nik.advancedstaff.utils.MillisTest;
 import org.bukkit.Bukkit;
@@ -38,6 +41,7 @@ public class AdvancedStaff extends JavaPlugin {
     private FreezeManager freezeManager;
     private StaffModeManager staffModeManager;
     private InventoryManager inventoryManager;
+    private StaffChatManager staffChatManager;
 
     private static AdvancedStaff instance;
 
@@ -73,6 +77,9 @@ public class AdvancedStaff extends JavaPlugin {
 
         this.inventoryManager = new InventoryManager();
         this.inventoryManager.initialize();
+
+        this.staffChatManager = new StaffChatManager();
+        this.staffChatManager.initialize();
         ChatUtils.log("Managers have been loaded in " + test.getMillis() + "ms");
 
         //Listeners
@@ -83,6 +90,7 @@ public class AdvancedStaff extends JavaPlugin {
                 new FreezeListener(this),
                 new StaffModeListener(this),
                 new InventoryListener(this),
+                new StaffChatListener(this),
                 new CommandManager(this)
         ).forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, this));
         ChatUtils.log("Managers have been loaded in " + test.getMillis() + "ms");
@@ -91,6 +99,14 @@ public class AdvancedStaff extends JavaPlugin {
         test.reset();
         getCommand("advancedstaff").setExecutor(new CommandManager(this));
         ChatUtils.log("Commands have been loaded in " + test.getMillis() + "ms");
+
+        //Metrics
+        new Metrics(this, 34152);
+
+        //Check for updates
+        if (Config.Setting.CHECK_UPDATES.getBoolean()) {
+            new UpdateChecker(this).runTaskAsynchronously(this);
+        }
     }
 
     @Override
@@ -103,12 +119,17 @@ public class AdvancedStaff extends JavaPlugin {
         this.freezeManager.shutdown();
         this.staffModeManager.shutdown();
         this.inventoryManager.shutdown();
+        this.staffChatManager.shutdown();
 
         this.config.reset();
         this.lang.reload();
         this.lang.save();
 
         instance = null;
+    }
+
+    public StaffChatManager getStaffChatManager() {
+        return staffChatManager;
     }
 
     public InventoryManager getInventoryManager() {

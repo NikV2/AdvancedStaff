@@ -43,6 +43,8 @@ public class Lang {
     public void addDefaults() {
         get().addDefault("prefix", "&f&l[&bAdvancedStaff&f&l]&f»&r ");
         get().addDefault("teleported", "&fYou have been randomly teleported to &b%player%");
+        get().addDefault("staffchat_enabled", "&fYou have enabled the &bstaff chat");
+        get().addDefault("staffchat_disabled", "&fYou have disabled the &bstaff chat");
         get().addDefault("vanish_enabled", "&fYou are now &binvisible");
         get().addDefault("vanish_disabled", "&fYou are no longer &binvisible");
         get().addDefault("vanish_actionbar", "&fYou are &bvanished");

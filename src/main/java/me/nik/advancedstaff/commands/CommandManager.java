@@ -6,6 +6,7 @@ import me.nik.advancedstaff.commands.subcommands.InspectCommand;
 import me.nik.advancedstaff.commands.subcommands.InventoryCommand;
 import me.nik.advancedstaff.commands.subcommands.MenuCommand;
 import me.nik.advancedstaff.commands.subcommands.ReloadCommand;
+import me.nik.advancedstaff.commands.subcommands.StaffChatCommand;
 import me.nik.advancedstaff.commands.subcommands.StaffModeCommand;
 import me.nik.advancedstaff.commands.subcommands.VanishCommand;
 import me.nik.advancedstaff.enums.MsgType;
@@ -44,6 +45,7 @@ public class CommandManager implements TabExecutor, Listener {
         this.subCommands.add(new FreezeCommand(plugin));
         this.subCommands.add(new StaffModeCommand(plugin));
         this.subCommands.add(new InventoryCommand(plugin));
+        this.subCommands.add(new StaffChatCommand(plugin));
         this.subCommands.add(new InspectCommand(plugin));
     }
 

@@ -9,6 +9,8 @@ public enum MsgType {
     PREFIX(ChatUtils.format(AdvancedStaff.getInstance().getLang().get().getString("prefix"))),
     STAFFMODE_ENABLED(PREFIX.getMessage() + ChatUtils.format(AdvancedStaff.getInstance().getLang().get().getString("staffmode_enabled"))),
     STAFFMODE_DISABLED(PREFIX.getMessage() + ChatUtils.format(AdvancedStaff.getInstance().getLang().get().getString("staffmode_disabled"))),
+    STAFFCHAT_ENABLED(PREFIX.getMessage() + ChatUtils.format(AdvancedStaff.getInstance().getLang().get().getString("staffchat_enabled"))),
+    STAFFCHAT_DISABLED(PREFIX.getMessage() + ChatUtils.format(AdvancedStaff.getInstance().getLang().get().getString("staffchat_disabled"))),
     FROZEN(PREFIX.getMessage() + ChatUtils.format(AdvancedStaff.getInstance().getLang().get().getString("frozen"))),
     TELEPORTED(PREFIX.getMessage() + ChatUtils.format(AdvancedStaff.getInstance().getLang().get().getString("teleported"))),
     UNFROZEN(PREFIX.getMessage() + ChatUtils.format(AdvancedStaff.getInstance().getLang().get().getString("unfrozen"))),
