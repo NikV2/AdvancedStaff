@@ -1,4 +1,4 @@
-##An advanced staff management and moderation plugin!
+## An advanced staff management and moderation plugin!
 
 ## License
 
