@@ -3,7 +3,8 @@ package me.nik.advancedstaff.enums;
 public enum Permissions {
     ADMIN("advancedstaff.admin"),
     RELOAD("advancedstaff.reload"),
-    MENU("advancedstaff.menu");
+    MENU("advancedstaff.menu"),
+    REPORT("advancedstaff.report");
 
     private final String permission;
 

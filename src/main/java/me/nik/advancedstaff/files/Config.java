@@ -84,14 +84,14 @@ public class Config {
         VANISH_DISABLE_MOB_TARGETING("vanish.disable_mob_targeting", true, "Should we prevent the vanished player from being targeted by mobs?"),
         VANISH_SILENT_CHEST_OPENING("vanish.silent_chest_opening", true, "Should chest opening for vanished players be silent?", "Nearby players will not hear or see the chest being opened"),
         VANISH_DISABLE_PHYSICAL_EVENTS("vanish.disable_physical_events", true, "Should we disable the vanished player's physical events?", "This prevents vanished players from enabling pressure plates and so on"),
-        VANISH_ACTIONBAR_UPDATE("vanish.actionbar_update", 60L, "How often should the actionbar update for vanished players?", "(In ticks)"),
+        VANISH_ACTIONBAR_UPDATE("vanish.actionbar_update", 20L, "How often should the actionbar update for vanished players?", "(In ticks)"),
 
         FREEZE("freeze", "", "Freeze Settings"),
         FREEZE_ALIASES("freeze.aliases", Collections.singletonList("freeze"), "Typing the aliases below will execute the freeze command"),
         LOGOUT_COMMANDS("freeze.logout_commands", Collections.singletonList(
                 "ban %player% Logged out during staff interrogation"
         ), "The commands that will be executed once a frozen player disconnects", "(%nl% for new line)"),
-        FREEZE_ACTIONBAR_UPDATE("freeze.actionbar_update", 60L, "How often should the actionbar update for frozen players?", "(In ticks)"),
+        FREEZE_ACTIONBAR_UPDATE("freeze.actionbar_update", 20L, "How often should the actionbar update for frozen players?", "(In ticks)"),
 
         STAFFCHAT("staff_chat", "", "Staff Chat Settings"),
         STAFFCHAT_ALIASES("staff_chat.aliases", Arrays.asList("staffchat", "sc"), "Typing the aliases below will execute the staffchat command"),
@@ -108,7 +108,35 @@ public class Config {
         STAFFMODE_PREVENT_TELEPORTING_TO_OTHER_STAFF("staffmode.prevent_teleporting_to_other_staff", true, "Should we prevent the random teleportation from teleporting to staff members?"),
 
         INVENTORY("inventory", "", "Inventory Settings"),
-        INVENTORY_ALIASES("inventory.aliases", Collections.singletonList("inventory"), "Typing the aliases below will execute the inventory command");
+        INVENTORY_ALIASES("inventory.aliases", Collections.singletonList("inventory"), "Typing the aliases below will execute the inventory command"),
+
+        STAFFPIN("staff_pin", "", "Staff PIN Settings"),
+        STAFFPIN_ALIASES("staff_pin.aliases", Arrays.asList("staffpin", "pin"), "Typing the aliases below will execute the staffpin command"),
+        STAFFPIN_MIN_LENGTH("staff_pin.min_length", 4, "Minimum PIN length"),
+        STAFFPIN_MAX_LENGTH("staff_pin.max_length", 12, "Maximum PIN length"),
+        STAFFPIN_NUMERIC_ONLY("staff_pin.numeric_only", true, "Should staff PINs contain numbers only?"),
+        STAFFPIN_HASH_METHOD("staff_pin.hash_method", "SHA256", "Hash algorithm used to protect newly registered staff PINs", "Supported: SHA256, SHA512"),
+        STAFFPIN_EXCLUDED_COMMANDS("staff_pin.excluded_commands", Arrays.asList(
+                "login",
+                "log",
+                "l",
+                "register",
+                "reg",
+                "email",
+                "captcha",
+                "2fa",
+                "totp"
+        ), "Commands staff can use while their PIN is locked"),
+
+        REPORT("report", "", "Report Settings"),
+        REPORT_ALIASES("report.aliases", Arrays.asList("report", "rep"), "Typing the aliases below will execute the report command"),
+        REPORTS_ALIASES("report.reports_aliases", Collections.singletonList("reports"), "Typing the aliases below will execute the reports (staff management) command"),
+        REPORT_COOLDOWN("report.cooldown_seconds", 60L, "How many seconds a player must wait between submitting reports"),
+        REPORT_MAX_ACTIVE_PER_PLAYER("report.max_active_per_player", 3, "Maximum number of a player's own open reports allowed at once", "0 = unlimited"),
+        REPORT_ALLOW_CUSTOM_REASON("report.allow_custom_reason", true, "Should players be able to type a custom reason instead of picking a preset one?"),
+        REPORT_NOTIFY_STAFF("report.notify_staff", true, "Should online staff with the manage permission be notified when a new report comes in?"),
+        REPORT_COMPLETED_HANDLING("report.completed_handling", "KEEP", "What happens to a report once it's resolved/rejected", "KEEP = stays in reports.yml for history, DELETE = removed immediately"),
+        REPORT_REASONS("report.reasons", Arrays.asList("Hacking / Cheating", "Chat Abuse", "Exploiting", "Scamming", "Inappropriate Name/Skin"), "The preset reasons shown as buttons in the report GUI");
 
         private final String key;
         private final Object defaultValue;

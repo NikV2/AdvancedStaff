@@ -19,3 +19,6 @@ permissions:
   advancedstaff.menu:
     description: Gives access to the menu
     default: op
+  advancedstaff.report:
+    description: Gives access to reporting players
+    default: true

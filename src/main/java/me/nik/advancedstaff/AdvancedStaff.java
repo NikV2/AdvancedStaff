@@ -6,13 +6,17 @@ import me.nik.advancedstaff.files.Lang;
 import me.nik.advancedstaff.listeners.FreezeListener;
 import me.nik.advancedstaff.listeners.GuiListener;
 import me.nik.advancedstaff.listeners.InventoryListener;
+import me.nik.advancedstaff.listeners.ReportListener;
 import me.nik.advancedstaff.listeners.StaffChatListener;
 import me.nik.advancedstaff.listeners.StaffModeListener;
+import me.nik.advancedstaff.listeners.StaffPinListener;
 import me.nik.advancedstaff.listeners.VanishListener;
 import me.nik.advancedstaff.managers.FreezeManager;
 import me.nik.advancedstaff.managers.InventoryManager;
+import me.nik.advancedstaff.managers.ReportManager;
 import me.nik.advancedstaff.managers.StaffChatManager;
 import me.nik.advancedstaff.managers.StaffModeManager;
+import me.nik.advancedstaff.managers.StaffPinManager;
 import me.nik.advancedstaff.managers.VanishManager;
 import me.nik.advancedstaff.metrics.Metrics;
 import me.nik.advancedstaff.utils.ChatUtils;
@@ -40,8 +44,10 @@ public class AdvancedStaff extends JavaPlugin {
     private VanishManager vanishManager;
     private FreezeManager freezeManager;
     private StaffModeManager staffModeManager;
+    private StaffPinManager staffPinManager;
     private InventoryManager inventoryManager;
     private StaffChatManager staffChatManager;
+    private ReportManager reportManager;
 
     private static AdvancedStaff instance;
 
@@ -75,11 +81,17 @@ public class AdvancedStaff extends JavaPlugin {
         this.staffModeManager = new StaffModeManager(this);
         this.staffModeManager.initialize();
 
+        this.staffPinManager = new StaffPinManager(this);
+        this.staffPinManager.initialize();
+
         this.inventoryManager = new InventoryManager();
         this.inventoryManager.initialize();
 
         this.staffChatManager = new StaffChatManager();
         this.staffChatManager.initialize();
+
+        this.reportManager = new ReportManager(this);
+        this.reportManager.initialize();
         ChatUtils.log("Managers have been loaded in " + test.getMillis() + "ms");
 
         //Listeners
@@ -89,8 +101,10 @@ public class AdvancedStaff extends JavaPlugin {
                 new VanishListener(this),
                 new FreezeListener(this),
                 new StaffModeListener(this),
+                new StaffPinListener(this),
                 new InventoryListener(this),
                 new StaffChatListener(this),
+                new ReportListener(this),
                 new CommandManager(this)
         ).forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, this));
         ChatUtils.log("Managers have been loaded in " + test.getMillis() + "ms");
@@ -118,8 +132,10 @@ public class AdvancedStaff extends JavaPlugin {
         this.vanishManager.shutdown();
         this.freezeManager.shutdown();
         this.staffModeManager.shutdown();
+        this.staffPinManager.shutdown();
         this.inventoryManager.shutdown();
         this.staffChatManager.shutdown();
+        this.reportManager.shutdown();
 
         this.config.reset();
         this.lang.reload();
@@ -132,12 +148,20 @@ public class AdvancedStaff extends JavaPlugin {
         return staffChatManager;
     }
 
+    public ReportManager getReportManager() {
+        return reportManager;
+    }
+
     public InventoryManager getInventoryManager() {
         return inventoryManager;
     }
 
     public StaffModeManager getStaffModeManager() {
         return staffModeManager;
+    }
+
+    public StaffPinManager getStaffPinManager() {
+        return staffPinManager;
     }
 
     public FreezeManager getFreezeManager() {

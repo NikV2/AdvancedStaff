@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -228,10 +229,30 @@ public class StaffModeManager implements AbstractManager {
     }
 
     public static class StaffItems {
-        public static ItemStack RANDOM_PLAYER_TP = MiscUtils.makeItem(Material.PLAYER_HEAD, "&2Teleport to a random player", null);
-        public static ItemStack FREEZE_PLAYER = MiscUtils.makeItem(Material.BLAZE_ROD, "&bFreeze player", null);
-        public static ItemStack VANISH = MiscUtils.makeItem(Material.BEACON, "&6Toggle Vanish", null);
-        public static ItemStack INVENTORY = MiscUtils.makeItem(Material.CHEST, "&eInspect inventory", null);
-        public static ItemStack EXIT = MiscUtils.makeItem(Material.BEACON, "&cExit Staff Mode", null);
+        public static ItemStack RANDOM_PLAYER_TP = MiscUtils.makeItem(Material.PLAYER_HEAD, "&2&lTeleport", Arrays.asList(
+                "",
+                "&eTeleport to a random player",
+                ""
+        ));
+        public static ItemStack FREEZE_PLAYER = MiscUtils.makeItem(Material.BLAZE_ROD, "&b&lFreeze", Arrays.asList(
+                "",
+                "&eFreeze the selected player",
+                ""
+        ));
+        public static ItemStack VANISH = MiscUtils.makeItem(Material.BEACON, "&6&lVanish", Arrays.asList(
+                "",
+                "&eToggle Vanish",
+                ""
+        ));
+        public static ItemStack INVENTORY = MiscUtils.makeItem(Material.CHEST, "&e&lInventory", Arrays.asList(
+                "",
+                "&eInspect the selected player's inventory",
+                ""
+        ));
+        public static ItemStack EXIT = MiscUtils.makeItem(Material.BARRIER, "&c&lExit", Arrays.asList(
+                "",
+                "&eExit staff mode",
+                ""
+        ));
     }
 }

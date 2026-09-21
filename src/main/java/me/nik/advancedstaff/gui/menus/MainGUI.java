@@ -2,6 +2,7 @@ package me.nik.advancedstaff.gui.menus;
 
 import me.nik.advancedstaff.AdvancedStaff;
 import me.nik.advancedstaff.enums.MsgType;
+import me.nik.advancedstaff.enums.Permissions;
 import me.nik.advancedstaff.gui.Menu;
 import me.nik.advancedstaff.gui.PlayerMenu;
 import me.nik.advancedstaff.utils.ChatUtils;
@@ -41,14 +42,11 @@ public class MainGUI extends Menu {
                 break;
             case 13:
                 p.closeInventory();
-                this.plugin.getConfiguration().setup();
-                this.plugin.getLang().reload();
-                p.sendMessage(MsgType.RELOADED.getMessage());
+                new ReportsGUI(this.playerMenu, this.plugin).open();
                 break;
             case 15:
                 p.closeInventory();
-
-                //StaffMode
+                this.plugin.getStaffModeManager().enterStaffMode(p);
                 break;
         }
     }
@@ -62,8 +60,8 @@ public class MainGUI extends Menu {
         ItemStack players = MiscUtils.makeItem(Material.PLAYER_HEAD, "&6Players", null);
         inventory.setItem(11, players);
 
-        ItemStack reload = MiscUtils.makeItem(Material.REDSTONE_BLOCK, "&6Reload", null);
-        inventory.setItem(13, reload);
+        ItemStack reports = MiscUtils.makeItem(Material.BOOKSHELF, "&6Reports", null);
+        inventory.setItem(13, reports);
 
         ItemStack staffMode = MiscUtils.makeItem(Material.ENDER_EYE, "&6Staff Mode", null);
         inventory.setItem(15, staffMode);
