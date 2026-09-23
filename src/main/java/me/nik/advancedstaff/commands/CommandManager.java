@@ -146,8 +146,8 @@ public class CommandManager implements TabExecutor, Listener {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
 
         if (args.length < 2) {
-
-            return this.subCommands.stream().map(SubCommand::getName).collect(Collectors.toList());
+            return this.subCommands.stream().filter(subCommand -> sender.hasPermission(subCommand.getPermission()))
+                    .map(SubCommand::getName).collect(Collectors.toList());
 
         } else {
 
