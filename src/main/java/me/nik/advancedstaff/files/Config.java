@@ -100,7 +100,7 @@ public class Config {
         STAFFCHAT_DISABLE_ON_QUIT("staff_chat.disable_on_quit", true, "Should staff chat be disabled when staff members quit?"),
 
         STAFFMODE("staffmode", "", "Staff Mode Settings"),
-        STAFFMODE_ALIASES("staffmode.aliases", Collections.singletonList("staffmode"), "Typing the aliases below will execute the staffmode command"),
+        STAFFMODE_ALIASES("staffmode.aliases", Arrays.asList("staffmode", "staff"), "Typing the aliases below will execute the staffmode command"),
         STAFFMODE_CREATIVE("staffmode.creative", true, "Should we put players who enter the staff mode to creative?"),
         STAFFMODE_FLIGHT("staffmode.flight", true, "Should we put players who enter the staff mode to flight mode?"),
         STAFFMODE_VANISH("staffmode.vanish", true, "Should we put players who enter the staff mode to vanish mode?"),

@@ -148,13 +148,17 @@ public class CommandManager implements TabExecutor, Listener {
         if (args.length < 2) {
             return this.subCommands.stream().filter(subCommand -> sender.hasPermission(subCommand.getPermission()))
                     .map(SubCommand::getName).collect(Collectors.toList());
-
         } else {
-
             for (SubCommand subCommand : this.subCommands) {
 
                 if (args[0].equalsIgnoreCase(subCommand.getName())) {
                     return subCommand.getSubcommandArguments(sender, args);
+                } else {
+                    for (String cmdAlias : subCommand.getAliases()) {
+                        if (args[0].equalsIgnoreCase(cmdAlias)) {
+                            return subCommand.getSubcommandArguments(sender, args);
+                        }
+                    }
                 }
             }
         }
