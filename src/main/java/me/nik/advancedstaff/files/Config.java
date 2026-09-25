@@ -116,6 +116,7 @@ public class Config {
         STAFFPIN_MAX_LENGTH("staff_pin.max_length", 12, "Maximum PIN length"),
         STAFFPIN_NUMERIC_ONLY("staff_pin.numeric_only", true, "Should staff PINs contain numbers only?"),
         STAFFPIN_HASH_METHOD("staff_pin.hash_method", "SHA256", "Hash algorithm used to protect newly registered staff PINs", "Supported: SHA256, SHA512"),
+        STAFFPIN_STORAGE_TYPE("staff_pin.storage_type", "SQLITE", "Which backend the storage manager uses", "YAML or SQLITE"),
         STAFFPIN_EXCLUDED_COMMANDS("staff_pin.excluded_commands", Arrays.asList(
                 "login",
                 "log",

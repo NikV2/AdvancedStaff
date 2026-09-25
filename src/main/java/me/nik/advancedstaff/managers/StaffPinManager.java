@@ -4,6 +4,11 @@ import me.nik.advancedstaff.AdvancedStaff;
 import me.nik.advancedstaff.enums.MsgType;
 import me.nik.advancedstaff.enums.Permissions;
 import me.nik.advancedstaff.files.Config;
+import me.nik.advancedstaff.storage.DataStore;
+import me.nik.advancedstaff.storage.SqliteDataStore;
+import me.nik.advancedstaff.storage.StoreType;
+import me.nik.advancedstaff.storage.YamlDataStore;
+import me.nik.advancedstaff.utils.ChatUtils;
 import me.nik.advancedstaff.utils.TaskUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,11 +21,14 @@ import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class StaffPinManager implements AbstractManager {
 
@@ -28,13 +36,12 @@ public class StaffPinManager implements AbstractManager {
     private static final String DEFAULT_HASH_METHOD = "SHA256";
 
     private final AdvancedStaff plugin;
-    private final Map<UUID, PinData> pins = new HashMap<>();
-    private final Set<UUID> authenticated = new HashSet<>();
-    private final Set<UUID> registering = new HashSet<>();
+    private final Map<UUID, PinData> pins = new ConcurrentHashMap<>();
+    private final Deque<UUID> authenticated = new ConcurrentLinkedDeque<>();
+    private final Deque<UUID> registering = new ConcurrentLinkedDeque<>();
     private final SecureRandom random = new SecureRandom();
 
-    private File file;
-    private YamlConfiguration storage;
+    private DataStore storage;
 
     public StaffPinManager(AdvancedStaff plugin) {
         this.plugin = plugin;
@@ -42,23 +49,29 @@ public class StaffPinManager implements AbstractManager {
 
     @Override
     public void initialize() {
-        this.file = new File(plugin.getDataFolder(), "staffpins.yml");
+        TaskUtils.taskAsync(() -> {
+            String type = Config.Setting.STAFFPIN_STORAGE_TYPE.getString();
 
-        if (!file.exists()) {
-            try {
-                file.getParentFile().mkdirs();
-                file.createNewFile();
-            } catch (IOException ignored) {
+            if ("SQLITE".equalsIgnoreCase(type)) {
+                this.storage = new SqliteDataStore(plugin, "pins");
+            } else {
+                if (!"YAML".equalsIgnoreCase(type)) {
+                    ChatUtils.log("Unknown storage.type '" + type + "' - defaulting to YAML.");
+                }
+                this.storage = new YamlDataStore(plugin, "pins");
             }
-        }
 
-        this.storage = YamlConfiguration.loadConfiguration(file);
-        load();
+            this.storage.initialize();
+
+            load();
+        });
     }
 
     @Override
     public void shutdown() {
-        save();
+        if (storage.type() != StoreType.SQLITE) {
+            save();
+        }
         pins.clear();
         authenticated.clear();
         registering.clear();
@@ -116,7 +129,7 @@ public class StaffPinManager implements AbstractManager {
 
         if (removed == null) return false;
 
-        save();
+        TaskUtils.taskAsync(this::save);
         return true;
     }
 
@@ -142,17 +155,13 @@ public class StaffPinManager implements AbstractManager {
     }
 
     public void handleJoin(Player player) {
-        if (player == null) return;
+        if (player == null || this.storage == null) return;
 
         authenticated.remove(player.getUniqueId());
 
         if (!isLocked(player)) return;
 
-        TaskUtils.task(() -> {
-            if (player.isOnline() && isLocked(player)) {
-                player.sendMessage(MsgType.STAFFPIN_PROMPT.getMessage());
-            }
-        });
+        player.sendMessage(MsgType.STAFFPIN_PROMPT.getMessage());
     }
 
     public void handleQuit(Player player) {
@@ -254,10 +263,11 @@ public class StaffPinManager implements AbstractManager {
     }
 
     private void load() {
-        ConfigurationSection section = storage.getConfigurationSection("staff-pins");
-        if (section == null) return;
+        Set<String> section = storage.getKeys("staff-pins");
 
-        for (String key : section.getKeys(false)) {
+        if (section == null || section.isEmpty()) return;
+
+        for (String key : section) {
             try {
                 UUID uuid = UUID.fromString(key);
                 String path = "staff-pins." + key;
@@ -275,7 +285,7 @@ public class StaffPinManager implements AbstractManager {
     }
 
     public void save() {
-        if (storage == null || file == null) return;
+        if (storage == null) return;
 
         storage.set("staff-pins", null);
 
@@ -288,10 +298,7 @@ public class StaffPinManager implements AbstractManager {
             storage.set(path + ".hash-method", data.hashMethod);
         }
 
-        try {
-            storage.save(file);
-        } catch (IOException ignored) {
-        }
+        storage.shutdown();
     }
 
     private static final class PinData {

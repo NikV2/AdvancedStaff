@@ -107,7 +107,7 @@ public class AdvancedStaff extends JavaPlugin {
                 new ReportListener(this),
                 new CommandManager(this)
         ).forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, this));
-        ChatUtils.log("Managers have been loaded in " + test.getMillis() + "ms");
+        ChatUtils.log("Listeners have been loaded in " + test.getMillis() + "ms");
 
         //Command
         test.reset();

@@ -47,23 +47,19 @@ public class StaffPinListener implements Listener {
 
         String pin = e.getMessage().trim();
 
-        TaskUtils.task(() -> {
-            if (!player.isOnline()) return;
+        if (!player.isOnline()) return;
 
-            if (registering) {
-                registerPin(player, pin);
-                return;
-            }
+        if (registering) {
+            registerPin(player, pin);
+            return;
+        }
 
-            if (!plugin.getStaffPinManager().isLocked(player)) return;
-
-            if (plugin.getStaffPinManager().authenticate(player, pin)) {
-                player.sendMessage(MsgType.STAFFPIN_UNLOCKED.getMessage());
-            } else {
-                player.sendMessage(MsgType.STAFFPIN_INCORRECT.getMessage());
-                player.sendMessage(MsgType.STAFFPIN_PROMPT.getMessage());
-            }
-        });
+        if (plugin.getStaffPinManager().authenticate(player, pin)) {
+            player.sendMessage(MsgType.STAFFPIN_UNLOCKED.getMessage());
+        } else {
+            player.sendMessage(MsgType.STAFFPIN_INCORRECT.getMessage());
+            player.sendMessage(MsgType.STAFFPIN_PROMPT.getMessage());
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
