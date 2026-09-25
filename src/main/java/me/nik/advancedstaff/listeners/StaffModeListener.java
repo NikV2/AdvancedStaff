@@ -27,6 +27,9 @@ public class StaffModeListener implements Listener {
 
     private final AdvancedStaff plugin;
 
+    //Small fix for perma freeze-unfreeze, This is universal intentionally.
+    private long lastFreeze = 0L;
+
     public StaffModeListener(AdvancedStaff plugin) {
         this.plugin = plugin;
     }
@@ -198,12 +201,20 @@ public class StaffModeListener implements Listener {
          * Freeze player
          */
         if (isItem(item, StaffModeManager.StaffItems.FREEZE_PLAYER)) {
-            if (this.plugin.getFreezeManager().isFrozen(target)) {
-                this.plugin.getFreezeManager().unFreeze(target);
-                staff.sendMessage(MsgType.UNFROZEN.getMessage().replace("%player%", target.getName()));
-            } else {
-                this.plugin.getFreezeManager().freeze(target);
-                staff.sendMessage(MsgType.FROZEN.getMessage().replace("%player%", target.getName()));
+
+            long currentTime = System.currentTimeMillis();
+            long delay = currentTime - this.lastFreeze;
+
+            if (delay > 500L) {
+                if (this.plugin.getFreezeManager().isFrozen(target)) {
+                    this.plugin.getFreezeManager().unFreeze(target);
+                    staff.sendMessage(MsgType.UNFROZEN.getMessage().replace("%player%", target.getName()));
+                } else {
+                    this.plugin.getFreezeManager().freeze(target);
+                    staff.sendMessage(MsgType.FROZEN.getMessage().replace("%player%", target.getName()));
+                }
+
+                this.lastFreeze = currentTime;
             }
 
             return;
