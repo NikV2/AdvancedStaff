@@ -14,11 +14,13 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
@@ -41,6 +43,18 @@ public class VanishListener implements Listener {
                 e.setJoinMessage(null);
             }
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onTeleport(PlayerTeleportEvent e) {
+        //Ensure vanish status
+        this.plugin.getVanishManager().refreshFor(e.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onWorldChange(PlayerChangedWorldEvent e) {
+        //Ensure vanish status
+        this.plugin.getVanishManager().refreshFor(e.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
