@@ -102,6 +102,7 @@ public class Config {
         STAFFMODE("staffmode", "", "Staff Mode Settings"),
         STAFFMODE_ALIASES("staffmode.aliases", Arrays.asList("staffmode", "staff"), "Typing the aliases below will execute the staffmode command"),
         STAFFMODE_CREATIVE("staffmode.creative", true, "Should we put players who enter the staff mode to creative?"),
+        STAFFMODE_INVULNERABLE("staffmode.invulnerable", true, "Should we set players who enter the staff mode to invulnerable?"),
         STAFFMODE_FLIGHT("staffmode.flight", true, "Should we put players who enter the staff mode to flight mode?"),
         STAFFMODE_VANISH("staffmode.vanish", true, "Should we put players who enter the staff mode to vanish mode?"),
         STAFFMODE_PREVENT_INTERACTING_WITH_STAFF_ITEMS("staffmode.prevent_interacting_with_staff_items", true, "Should we prevent any type of interaction with the staff inventory items?"),

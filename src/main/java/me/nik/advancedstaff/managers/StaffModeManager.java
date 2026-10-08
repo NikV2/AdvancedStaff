@@ -52,6 +52,10 @@ public class StaffModeManager implements AbstractManager {
             player.setGameMode(GameMode.CREATIVE);
         }
 
+        if (Config.Setting.STAFFMODE_INVULNERABLE.getBoolean()) {
+            player.setInvulnerable(true);
+        }
+
         if (Config.Setting.STAFFMODE_FLIGHT.getBoolean()) {
             player.setAllowFlight(true);
             player.setFlying(true);
@@ -140,8 +144,7 @@ public class StaffModeManager implements AbstractManager {
 
         private final GameMode gameMode;
 
-        private final boolean allowFlight;
-        private final boolean flying;
+        private final boolean allowFlight, flying, inVulnerable;
 
         private final int foodLevel;
         private final float saturation;
@@ -168,6 +171,7 @@ public class StaffModeManager implements AbstractManager {
 
             this.allowFlight = player.getAllowFlight();
             this.flying = player.isFlying();
+            this.inVulnerable = player.isInvulnerable();
 
             this.foodLevel = player.getFoodLevel();
             this.saturation = player.getSaturation();
@@ -210,6 +214,8 @@ public class StaffModeManager implements AbstractManager {
             player.setExp(exp);
 
             player.setFireTicks(fireTicks);
+
+            player.setInvulnerable(inVulnerable);
 
             for (PotionEffect effect :
                     new ArrayList<>(player.getActivePotionEffects())) {
